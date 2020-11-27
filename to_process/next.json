@@ -1,0 +1,17 @@
+{
+    "queue":[
+        {
+            "name": "256-public_defects_big5_subset",
+            "subset": "big_5",
+            "target_list": "big_5",
+            "pipeline": "256x256",
+            "dimensions": [
+                256,
+                256,
+                3
+            ],
+            "records_per_file": 170
+        }
+    ]    
+}
+
