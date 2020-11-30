@@ -77,28 +77,29 @@ These parameters tell the code to create a dataset called `256-public_defects_bi
 
 ### Creating Datasets
 
-Firstly you'll want to set up the correct python environment to run this code. I recommend using virtualenv:
+Firstly you'll want to set up the correct python environment to run this code. I recommend using `virtualenv`:
 
 ```
-virtualenv -p /usr/bin/python3.6 env # assuming you have python 3.6 installed, if not, you'll want to install this first and store it at /usr/bin/python3.6
-# this will create a pubroaddefects/env file
+# first make sure you have python3.6 installed under /usr/bin/python3.6
+virtualenv -p /usr/bin/python3.6 env
+# this will create a pubroaddefects/env directory
 source env/bin/activate
 pip install -r requirements.txt
 ```
 
-Now to create the dataset above simply run the command
+Now to create a dataset parameterized by `to_process/next.json`, simply run the command
 
 `python make_dataset.py --workers=5 # or how ever many workers you like, more=quicker`
 
-`make_dataset.py` will read `to_process/next.json` and create a dataset matching every set of parameters queued up in that file, saving each in `data/processed` by default. Every set of parameters processed in this way will also be saved to `to_process/saved.json` so you can keep track of which datasets you have created in the past and replicate them deterministically in the future by adding them back into the queue. These datasets can get pretty big so I find myself deleting and re-creating them fairly often.
+The resulting dataset will be saved in `data/processed` by default. Every set of parameters processed in this way will also be saved to `to_process/saved.json` so you can keep track of which datasets you have created in the past and replicate them deterministically in the future by adding them back into the queue. These datasets can get pretty big so I find myself deleting and re-creating them fairly often.
 
 ### Notes
 
-The current code is ONLY suitable for image classification tasks (1 label per image) and not object detection tasks (drawing bounding boxes). The locations of the bounding boxes are simply discarded. This is because we believe that ultimately there isn't that much value in object detection over image classification when it comes to getting practical value out of road fault detection AI. If you have other ideas, you can add this information to the TFRecords by making some changes to `app/tfrecords.py`.
+The current code is ONLY suitable for image classification tasks (one or more class labels per image) and not object detection tasks (drawing bounding boxes). The locations of the bounding boxes listed in the XML annotation files are simply discarded. This is because we believe that ultimately there isn't that much value in object detection over image classification when it comes to getting practical value out of road fault detection AI. If you have other ideas you can add the bounding box information to the TFRecord datasets by making some changes to `app/tfrecords.py`. However for object detection you'll likely be better off using [This repository](https://github.com/sekilab/RoadDamageDetector) or referring to the [Tensorflow Object Detection Tutorial](https://www.tensorflow.org/hub/tutorials/object_detection).
 
 To get the most out of this repository you will probably have to define your own custom pipelines (see `app/pipeline.py`) to do things like normalize images or apply random crops, brightness adjustments, etc. There's a little more information and some example code which loads a processed dataset in `example_training.ipynb`.
 
-In general we found that for data augmentation the best strategy was to apply TFDataset augmentation processes on the completed dataset during training, rather than creating pipelines in `app/pipeline.py` that create datasets with multiple augmented TFRecords for each raw image.
+In general we found that for data augmentation the best strategy was to apply TFDataset augmentation processes on the finalized dataset during training, rather than writing pipelines in `app/pipeline.py` that create datasets with multiple augmented TFRecords for each raw image.
 
 ## Recent Papers
 
@@ -107,7 +108,7 @@ A list of papers on the topic of road damage detection that we found to be the m
 - [Road Damage Detection Using Deep Neural Networks with Images Captured Through a Smartphone](https://arxiv.org/abs/1801.09454): the seminal paper (in our humble opinion), achieves strong results using cellphone quality footage of road surfaces.
 - [Road Damage Detection Acquisition System based on Deep Neural Networks for Physical Asset Management](https://arxiv.org/abs/1909.08991): achieves (arguably) better results by adding more data and reducing class imbalance.
 - [Transfer Learning-based Road Damage Detection for Multiple Countries](https://arxiv.org/abs/2008.13101): begins to study the performance of classifiers trained on data from one country on data collected in another country.
-- Also watch out for any papers resulting from the [2020 Road Damage Detection Competition](https://rdd2020.sekilab.global/overview/), they're bound to be good.
+- Also watch for any papers resulting from the [2020 Road Damage Detection Competition](https://rdd2020.sekilab.global/overview/), they're bound to be good.
 ## Data Sources
 
 All data training is sourced from publicly available datasets. All credit goes to the talented researchers responsible.
