@@ -65,9 +65,6 @@ DATASETS = {
     },
     "czech": {
         "path": DATA_PATH+"train/Czech/images/"
-    },
-    "usa": {
-        "path": DATA_PATH+"train/USA/images/",
     },    
     "italymexico": {
         "path": DATA_PATH+"train/ItalyMexico/images/",
@@ -81,7 +78,6 @@ TRAINING_DATASET_NAMES = [
     "japan",
     "india",
     "czech",
-    "usa",
     "italymexico",
     "indonesia"
 ]

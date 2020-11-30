@@ -160,35 +160,6 @@ All data training is sourced from publicly available datasets. All credit goes t
 }
 ```
 
-
-### USA
-
-**Source**: [Github Repository](https://github.com/fyangneil/pavement-crack-detection), many thanks to the researchers who compiled the dataset. 
-**Article**: [Pavement Image Datasets: A New Benchmark Dataset to Classify and Densify Pavement Distresses](https://arxiv.org/abs/1910.11123)
-**Modifications**: The files were restructured and some annotation names were altered to bring dataset in line with the format set down by the 2020 Road Damage Detection Competition.  
-
-**Bibtex Citation**
-
-```
-@article{DBLP:journals/corr/abs-1910-11123,
-  author    = {Hamed Majidifard and
-               Peng Jin and
-               Yaw Adu{-}Gyamfi and
-               William G. Buttlar},
-  title     = {{PID:} {A} New Benchmark Dataset to Classify and Densify Pavement
-               Distresses},
-  journal   = {CoRR},
-  volume    = {abs/1910.11123},
-  year      = {2019},
-  url       = {http://arxiv.org/abs/1910.11123},
-  archivePrefix = {arXiv},
-  eprint    = {1910.11123},
-  timestamp = {Fri, 25 Oct 2019 14:59:26 +0200},
-  biburl    = {https://dblp.org/rec/journals/corr/abs-1910-11123.bib},
-  bibsource = {dblp computer science bibliography, https://dblp.org}
-}
-```
-
 ### Indonesia
 
 **Source**: [Kaggle Dataset](https://www.kaggle.com/alvarobasily/road-damage), many thanks to the author. 

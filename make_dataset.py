@@ -30,7 +30,7 @@ for name, data in DATASETS.items():
     samples[name] = os.listdir(data["path"])
 
 SUBSETS = {
-    "all": samples["japan"] + samples["india"] + samples["czech"] + samples["usa"] + samples["italymexico"] + samples["indonesia"],
+    "all": samples["japan"] + samples["india"] + samples["czech"] + samples["italymexico"] + samples["indonesia"],
     "big_5": load_subset("big_5"), 
 }
 
