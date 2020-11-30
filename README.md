@@ -1,6 +1,6 @@
 # Public Road Defects
 
-This repository is based around a collated set of publicly available images of road surfaces annotated with rectangles around each defect, e.g. the below:
+This repository is based around a collated set of publicly available images of road surfaces annotated with rectangles around each defect, e.g.:
 
 ![](./assets/india-annotation.png)
 
@@ -8,12 +8,12 @@ The defect codes are based on research by [Maeda et al.](https://arxiv.org/abs/1
 
 ![](./assets/definitions.png)
 
-Its main purpose is to make running experiments on these images easier by storing them in a consistent format. we've also provided some starter code for processing the raw images and then converting them into [TFRecord](https://www.tensorflow.org/tutorials/load_data/tfrecord) files, which can in turn be used for training Tensorflow models efficiently.
+The purpose of this repository is to make running experiments on these images easier by storing them in a consistent format. We've also provided some starter code for processing the raw images and then converting them into [TFRecord](https://www.tensorflow.org/tutorials/load_data/tfrecord) files, which can in turn be used for training Tensorflow models efficiently.
 
 
 ## Data Setup
 
-To use the dataset in conjunction with this repository, simply clone the repo to your local machine, download the [train.zip file](), and extract to `pubroaddefects/data/`. The directory structure for each dataset looks like:
+To use the dataset in conjunction with this repository, simply clone the repo to your local machine, download the train.zip file (the link to this file will be made publicly available once we have obtained permission from the authors), and extract to `pubroaddefects/data/`. The directory structure for each dataset looks like:
 
 ```
 - Name: E.g. India
@@ -25,7 +25,7 @@ To use the dataset in conjunction with this repository, simply clone the repo to
 So at the end you should have a directory structure that looks like
 
 ```
-- app: python files to help create TFRecord files
+- app: python code to help create TFRecord files
 - assets: explanatory images
 - data
   - processed: where the TFRecord files end up
@@ -69,7 +69,7 @@ These parameters tell the code to create a dataset called `256-public_defects_bi
 
 **"target_list": "big_5"**: it will only include defects from the big 5 defects in the dataset labels (e.g. even if one of the images contains a `Sealed_Crack` defect, this will not appear in the dataset labels). 
 
-**"pipeline": "256x256"**: each image will be processed by the `256x256` pipeline (see `app/pipelines.py`), which just resizes each image to `256x256`. `dimensions` 
+**"pipeline": "256x256"**: each image will be processed by the `256x256` pipeline (see `app/pipelines.py`), which just resizes each image to 256x256x3. 
 
 **"dimensions": [256, 256, 3]**: each image in the dataset will have the dimensions 256x256x3. This parameter must be set manually, it's helpful when loading `.record` files later. 
 
@@ -77,9 +77,18 @@ These parameters tell the code to create a dataset called `256-public_defects_bi
 
 ### Creating Datasets
 
-To create this dataset simply run the command
+Firstly you'll want to set up the correct python environment to run this code. I recommend using virtualenv:
 
-`python3 make_dataset.py --workers=5`
+```
+virtualenv -p /usr/bin/python3.6 env # assuming you have python 3.6 installed, if not, you'll want to install this first and store it at /usr/bin/python3.6
+# this will create a pubroaddefects/env file
+source env/bin/activate
+pip install -r requirements.txt
+```
+
+Now to create the dataset above simply run the command
+
+`python make_dataset.py --workers=5 # or how ever many workers you like, more=quicker`
 
 `make_dataset.py` will read `to_process/next.json` and create a dataset matching every set of parameters queued up in that file, saving each in `data/processed` by default. Every set of parameters processed in this way will also be saved to `to_process/saved.json` so you can keep track of which datasets you have created in the past and replicate them deterministically in the future by adding them back into the queue. These datasets can get pretty big so I find myself deleting and re-creating them fairly often.
 
@@ -93,19 +102,19 @@ In general we found that for data augmentation the best strategy was to apply TF
 
 ## Recent Papers
 
-A list of papers on the topic of road damage detection that we found to be the most helpful when assessing the state of road defect detection research: 
+A list of papers on the topic of road damage detection that we found to be the most helpful as starting points for assessing the state of road defect detection research: 
 
-[Road Damage Detection Using Deep Neural Networks with Images Captured Through a Smartphone](https://arxiv.org/abs/1801.09454): the seminal paper (in our humble opinion), achieves strong results using cellphone quality footage of road surfaces.
-[Road Damage Detection Acquisition System based on Deep Neural Networks for Physical Asset Management](https://arxiv.org/abs/1909.08991): achieves (arguably) better results by adding more data and reducing class imbalance.
-[Transfer Learning-based Road Damage Detection for Multiple Countries](https://arxiv.org/abs/2008.13101): begins to study the performance of classified trained on data from one country on data collected in another country.
-
+- [Road Damage Detection Using Deep Neural Networks with Images Captured Through a Smartphone](https://arxiv.org/abs/1801.09454): the seminal paper (in our humble opinion), achieves strong results using cellphone quality footage of road surfaces.
+- [Road Damage Detection Acquisition System based on Deep Neural Networks for Physical Asset Management](https://arxiv.org/abs/1909.08991): achieves (arguably) better results by adding more data and reducing class imbalance.
+- [Transfer Learning-based Road Damage Detection for Multiple Countries](https://arxiv.org/abs/2008.13101): begins to study the performance of classifiers trained on data from one country on data collected in another country.
+- Also watch out for any papers resulting from the [2020 Road Damage Detection Competition](https://rdd2020.sekilab.global/overview/), they're bound to be good.
 ## Data Sources
 
 All data training is sourced from publicly available datasets. All credit goes to the talented researchers responsible.
 
 ### Czech, India, Japan
 
-**Source**: [2020 Road Damage Detection Compeition](https://rdd2020.sekilab.global/data/), many thanks to the organizers. 
+**Source**: [2020 Road Damage Detection Competition](https://rdd2020.sekilab.global/data/), many thanks to the organizers. 
 **Modifications**: none.  
 
 **Bibtex Citation**
@@ -183,4 +192,7 @@ All data training is sourced from publicly available datasets. All credit goes t
 
 **Source**: [Kaggle Dataset](https://www.kaggle.com/alvarobasily/road-damage), many thanks to the author. 
 **Author**: [Alvaro Basily](https://www.kaggle.com/alvarobasily).
-**Modifications**: The original txt annotations have been converted into the 2020 Road Damage Detection Competition XML format. 
+**Modifications**: The original `.txt` annotations have been converted into the standard XML format. 
+
+
+If you use this data in your own research or projects, please credit the researchers responsible for creating the original datasets.
